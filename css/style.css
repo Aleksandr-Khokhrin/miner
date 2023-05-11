@@ -177,7 +177,6 @@ input::-webkit-inner-spin-button {
   border-radius: 1em;
 }
 .gameOver {
-  display: block;
   width: 30vw;
   height: 10vw;
   flex-direction: column;
@@ -194,7 +193,6 @@ input::-webkit-inner-spin-button {
   border-radius: 1em;
 }
 .gameWin {
-  display: none;
   width: 30vw;
   height: 10vw;
   flex-direction: column;

@@ -276,13 +276,16 @@ async function gameStep() {
             if(response.status == 'Failed') {
                 let gameBtn = document.querySelector('#gameButton')
                 gameBtn.innerHTML = 'Завершить игру'
-                alert('Ты проиграл, лузер')
+                document.querySelector('.gameOver').classList.add('Nonone')
+                document.querySelector('.gameOver').classList.remove('none')
             } else if (response.status == 'Won') {
-                alert('Ты выиграл, красавчик')
+                document.querySelector('.gameWin').classList.add('Nonone')
+                document.querySelector('.gameWin').classList.remove('none')
             }
         }     
     console.log(response)
 }
+
 
 function updateArea(arr) {
     // let field = document.querySelector('.field')
