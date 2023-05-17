@@ -62,8 +62,6 @@ main {
 }
 h2 {
   text-transform: uppercase;
-
-
 }
 .points {
   display: flex;
@@ -177,8 +175,26 @@ input::-webkit-inner-spin-button {
   border-radius: 1em;
 }
 .gameOver {
-  width: 30vw;
-  height: 10vw;
+  width: auto;
+  height: auto;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background-color: var(--purple);
+  position: fixed;
+  top: 20%;
+  right: calc(40% - 90px);
+  z-index: 1;
+  box-shadow: 0 0 150px rgba(34, 89, 208, 0.51);
+  padding: 2%;
+  border-radius: 1em;
+  padding: 2vw;
+
+}
+.gameWin {
+  width: auto;
+  height: auto;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -192,19 +208,11 @@ input::-webkit-inner-spin-button {
   padding: 2%;
   border-radius: 1em;
 }
-.gameWin {
-  width: 30vw;
-  height: 10vw;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  background-color: var(--purple);
-  position: absolute;
-  top: 20%;
-  right: 40%;
-  z-index: 1;
-  box-shadow: 0 0 150px rgba(34, 89, 208, 0.51);
-  padding: 2%;
-  border-radius: 1em;
+
+.gameOver h2{
+  font-size: 20px;
+  margin: 0;
+}
+.gameWin h2{
+
 }

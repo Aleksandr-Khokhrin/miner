@@ -21,11 +21,26 @@ document.querySelectorAll('.point').forEach( btn => {
 })
 document.querySelector('.point input').addEventListener('input', setPointsFromInput)
 document.querySelector('#gameButton').addEventListener('click', startOrStopGame)
-
+document.querySelector('.gameOver').addEventListener('click', closeWind)
+document.querySelector('.gameWin').addEventListener('click', closeWind)
 let userInput = document.querySelector('.registration input')
 console.log(userInput.innerHTML)
 
 //Функции
+
+function closeWind(){
+    let elem = event.target
+    let gameOver = document.querySelector('.gameOver')
+    let gameWin = document.querySelector('.gameWin')
+    if(elem == gameOver) {
+        gameOver.classList.remove('Nonone')
+        gameOver.classList.add('none')
+    }
+    if(elem == gameWin) {
+        gameWin.classList.remove('Nonone')
+        gameWin.classList.add('none')
+    }
+}
 async function regUser() {
     username = document.getElementById("myinput").value
     setCookie('username', username)
@@ -72,6 +87,7 @@ function startOrStopGame() {
         newGame()
     } else {
         stopGame()
+        cleanArea() 
         gameBtn.innerHTML = 'ИГРАТЬ'
     }
 }
@@ -141,6 +157,18 @@ async function newGame(){
         // console.log(response)
     }
 }
+async function stopGame() {
+    let response = await sendRequest('stop_game', 'POST', {
+        username, game_id
+    })
+    if (response.error) {
+        // alert(response.message)
+    } else {
+        cleanArea()
+        getUser(username)
+        
+    }
+}
 
 function activateArea(){
     let cells = document.querySelectorAll('.cell')
@@ -156,18 +184,6 @@ function activateArea(){
     }
 }
 
-async function stopGame() {
-    let response = await sendRequest('stop_game', 'POST', {
-        username, game_id
-    })
-    if (response.error) {
-        alert(response.message)
-    } else {
-        cleanArea()
-        getUser(username)
-        
-    }
-}
 
 function cleanArea() {
     let field = document.querySelector('.field')
@@ -271,7 +287,7 @@ async function gameStep() {
             alert(response.message)
 
         } else {
-            // успещный запрос
+            // успешный запрос
             updateArea(response.table)
             if(response.status == 'Failed') {
                 let gameBtn = document.querySelector('#gameButton')
@@ -308,6 +324,7 @@ function updateArea(arr) {
         }
     }
 }
+
 
 function getCookie(name) {
 let matches = document.cookie.match(new RegExp(
