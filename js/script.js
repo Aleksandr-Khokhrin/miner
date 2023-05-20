@@ -85,10 +85,18 @@ function startOrStopGame() {
     if (gameBtnText == 'ИГРАТЬ') {
         gameBtn.innerHTML = 'ЗАВЕРШИТЬ ИГРУ'
         newGame()
+        document.querySelector('.gameOver').classList.remove('Nonone')
+        document.querySelector('.gameWin').classList.remove('Nonone')
+        document.querySelector('.gameOver').classList.add('none')
+        document.querySelector('.gameWin').classList.add('none')
     } else {
         stopGame()
         cleanArea() 
         gameBtn.innerHTML = 'ИГРАТЬ'
+        document.querySelector('.gameOver').classList.remove('Nonone')
+        document.querySelector('.gameWin').classList.remove('Nonone')
+        document.querySelector('.gameOver').classList.add('none')
+        document.querySelector('.gameWin').classList.add('none')
     }
 }
 

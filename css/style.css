@@ -57,8 +57,8 @@ main {
   border-radius: 20px;
   padding: 20px;
   text-align: center;
-
   flex-grow: 1;
+  position: relative;
 }
 h2 {
   text-transform: uppercase;
@@ -159,32 +159,34 @@ input::-webkit-inner-spin-button {
   background-size: contain;
 }
 .registration {
-  width: 30vw;
-  height: 10vw;
-  flex-direction: column;
   justify-content: center;
-  align-items: center;
+  width: 50%;
   text-align: center;
   background-color: var(--purple);
-  position: absolute;
-  top: 20%;
-  right: 40%;
+  position: fixed;
+  top: 100px;
   z-index: 1;
   box-shadow: 0 0 150px rgba(34, 89, 208, 0.51);
-  padding: 2%;
+  padding: 40px 20px;
   border-radius: 1em;
+
+}
+.Block {
+  display: flex;
+  justify-content: center;
+  border-color: bisque;
+}
+.Block h2{
+  font-size: calc(1vw + 16.4px);
+  line-height: 140%;
+  margin: 0;
 }
 .gameOver {
-  width: auto;
-  height: auto;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
   text-align: center;
   background-color: var(--purple);
   position: fixed;
-  top: 20%;
-  right: calc(40% - 90px);
+  top: 100px;
   z-index: 1;
   box-shadow: 0 0 150px rgba(34, 89, 208, 0.51);
   padding: 2%;
@@ -193,16 +195,10 @@ input::-webkit-inner-spin-button {
 
 }
 .gameWin {
-  width: auto;
-  height: auto;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   text-align: center;
   background-color: var(--purple);
   position: absolute;
-  top: 20%;
-  right: 40%;
+  top: 100px;
   z-index: 1;
   box-shadow: 0 0 150px rgba(34, 89, 208, 0.51);
   padding: 2%;
@@ -213,6 +209,42 @@ input::-webkit-inner-spin-button {
   font-size: 20px;
   margin: 0;
 }
-.gameWin h2{
+.wrapper{
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.6);
+  display: none;
 
+}
+
+.wrapper.active {
+  display: flex;
+}
+
+.wrapper h5{
+  margin: calc(4.4vw + 23.4px) 0;
+  margin: 0;
+  padding: 60px 0 0px;
+}
+.popUp{
+  text-align: center;
+  background: #F0F7FD;
+  border-radius: 12px;
+  width: 70vw;
+}
+
+
+@media (max-width:400px) {
+  .cell {
+    width: 25px;
+    height: 25px;
+  }
+  .field {
+    grid-template-columns: repeat(10, 25px);
+  }
 }
