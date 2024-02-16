@@ -6,17 +6,17 @@
 let points = 1000
 let username = ''
 
-if(getCookie('username')) {
+if (getCookie('username')) {
     username = getCookie('username')
     getUser(username)
-}else {
+} else {
     regUser()
 }
 let game_id = ''
 
 //Лисенеры
 
-document.querySelectorAll('.point').forEach( btn => {
+document.querySelectorAll('.point').forEach(btn => {
     btn.addEventListener('click', setPoints)
 })
 document.querySelector('.point input').addEventListener('input', setPointsFromInput)
@@ -24,21 +24,26 @@ document.querySelector('#gameButton').addEventListener('click', startOrStopGame)
 document.querySelector('.gameOver').addEventListener('click', closeWind)
 document.querySelector('.gameWin').addEventListener('click', closeWind)
 let userInput = document.querySelector('.registration input')
+let block = document.querySelector('.Block')
 console.log(userInput.innerHTML)
 
 //Функции
 
-function closeWind(){
+function closeWind() {
     let elem = event.target
     let gameOver = document.querySelector('.gameOver')
     let gameWin = document.querySelector('.gameWin')
-    if(elem == gameOver) {
+    if (elem == gameOver) {
         gameOver.classList.remove('Nonone')
         gameOver.classList.add('none')
+        block.classList.remove('flex')
+        block.classList.add('none')
     }
-    if(elem == gameWin) {
+    if (elem == gameWin) {
         gameWin.classList.remove('Nonone')
         gameWin.classList.add('none')
+        block.classList.remove('flex')
+        block.classList.add('none')
     }
 }
 async function regUser() {
@@ -46,7 +51,7 @@ async function regUser() {
     setCookie('username', username)
     // document.querySelector('.registration').classList.add('none')
     // отправить запрос на регистрацию пользователя
-    await sendRequest('user', 'POST', {username})
+    await sendRequest('user', 'POST', { username })
     getUser(username)
 }
 // username = prompt('Введите логин')
@@ -54,15 +59,15 @@ async function regUser() {
 function setPoints() {
     let userBtn = event.target
 
-    document.querySelectorAll('.point').forEach( btn => {
+    document.querySelectorAll('.point').forEach(btn => {
         btn.classList.remove('active')
     })
     userBtn.classList.add('active')
-    if(userBtn.innerHTML == 'другое'){
+    if (userBtn.innerHTML == 'другое') {
         //другое
         document.querySelector('.point.input').classList.remove('disabled')
         document.querySelector('.point.input').classList.add('active')
-    }else if(userBtn ==  document.querySelector('.point.input') || userBtn == document.querySelector('.point.input input')) {
+    } else if (userBtn == document.querySelector('.point.input') || userBtn == document.querySelector('.point.input input')) {
         //инпут
         document.querySelector('.point.input').classList.add('active')
     }
@@ -89,21 +94,25 @@ function startOrStopGame() {
         document.querySelector('.gameWin').classList.remove('Nonone')
         document.querySelector('.gameOver').classList.add('none')
         document.querySelector('.gameWin').classList.add('none')
+        block.classList.remove('flex')
+        block.classList.add('none')
     } else {
         stopGame()
-        cleanArea() 
+        cleanArea()
         gameBtn.innerHTML = 'ИГРАТЬ'
         document.querySelector('.gameOver').classList.remove('Nonone')
         document.querySelector('.gameWin').classList.remove('Nonone')
         document.querySelector('.gameOver').classList.add('none')
         document.querySelector('.gameWin').classList.add('none')
+        block.classList.remove('flex')
+        block.classList.add('none')
     }
 }
 
 async function sendRequest(url, method, data) {
     url = `https://tg-api.tehnikum.school/tehnikum_course/minesweeper/${url}`
-    
-    if(method == "POST") {
+
+    if (method == "POST") {
         let response = await fetch(url, {
             method: "POST",
             headers: {
@@ -112,11 +121,11 @@ async function sendRequest(url, method, data) {
             },
             body: JSON.stringify(data)
         })
-    
+
         response = await response.json()
         return response
-    } else if(method == "GET") {
-        url = url+"?"+ new URLSearchParams(data)
+    } else if (method == "GET") {
+        url = url + "?" + new URLSearchParams(data)
         let response = await fetch(url, {
             method: "GET",
             headers: {
@@ -141,15 +150,17 @@ async function getUser(username) {
         // нет ошибки
         let userInfo = document.querySelector('header span')
         userInfo.innerHTML = `[${username}, ${response.balance}]`
-        if (username != ''){
+        if (username != '') {
             document.querySelector('.registration').classList.remove('flex')
-            document.querySelector('.registration').classList.add('none') 
+            document.querySelector('.registration').classList.add('none')
+            block.classList.remove('flex')
+            block.classList.add('none')
         }
-        
+
     }
 }
 
-async function newGame(){
+async function newGame() {
     let response = await sendRequest('new_game', 'POST', {
         username, points
     })
@@ -159,7 +170,7 @@ async function newGame(){
         game_id = response.game_id
         let userInfo = document.querySelector('header span')
         userInfo.innerHTML = `[${username}, ${response.user_balance}]`
-        cleanArea() 
+        cleanArea()
         activateArea()
 
         // console.log(response)
@@ -174,19 +185,19 @@ async function stopGame() {
     } else {
         cleanArea()
         getUser(username)
-        
+
     }
 }
 
-function activateArea(){
+function activateArea() {
     let cells = document.querySelectorAll('.cell')
-    for(let i = 0; i < cells.length; i++){
+    for (let i = 0; i < cells.length; i++) {
         let cell = cells[i];
         cell.classList.add('active')
         let row = Math.ceil((i + 1) / 10)
-        let column = i + 1 - 10*(row-1)
-        cell.setAttribute('data-row', row -1)
-        cell.setAttribute('data-column', column -1)
+        let column = i + 1 - 10 * (row - 1)
+        cell.setAttribute('data-row', row - 1)
+        cell.setAttribute('data-column', column - 1)
         cell.addEventListener('contextmenu', setFlag)
         cell.addEventListener('click', gameStep)
     }
@@ -290,23 +301,25 @@ async function gameStep() {
     let column = +cell.getAttribute('data-column')
 
     let response = await sendRequest('game_step', 'POST', {
-        game_id, row, column })
-        if (response.error) {
-            alert(response.message)
+        game_id, row, column
+    })
+    if (response.error) {
+        alert(response.message)
 
-        } else {
-            // успешный запрос
-            updateArea(response.table)
-            if(response.status == 'Failed') {
-                let gameBtn = document.querySelector('#gameButton')
-                gameBtn.innerHTML = 'Завершить игру'
-                document.querySelector('.gameOver').classList.add('Nonone')
-                document.querySelector('.gameOver').classList.remove('none')
-            } else if (response.status == 'Won') {
-                document.querySelector('.gameWin').classList.add('Nonone')
-                document.querySelector('.gameWin').classList.remove('none')
-            }
-        }     
+    } else {
+        // успешный запрос
+        updateArea(response.table)
+        if (response.status == 'Failed') {
+            let gameBtn = document.querySelector('#gameButton')
+            gameBtn.innerHTML = 'Завершить игру'
+            document.querySelector('.gameOver').classList.add('Nonone')
+            document.querySelector('.gameOver').classList.remove('none')
+        } else if (response.status == 'Won') {
+            document.querySelector('.gameWin').classList.add('Nonone')
+            document.querySelector('.gameWin').classList.remove('none')
+       
+        }
+    }
     console.log(response)
 }
 
@@ -315,19 +328,18 @@ function updateArea(arr) {
     // let field = document.querySelector('.field')
     let cells = document.querySelectorAll('.cell')
     k = 0
-    for( let i = 0; i < arr.length; i++){
-        for( let j = 0; j < arr[i].length; j++){
+    for (let i = 0; i < arr.length; i++) {
+        for (let j = 0; j < arr[i].length; j++) {
             let cellStatus = arr[i][j]
-            if(cellStatus == 'BOMB'){
+            if (cellStatus == 'BOMB') {
                 cells[k].classList.add('bomb')
                 cells[k].classList.remove('active')
-            }  else if(cellStatus === 0) {
+            } else if (cellStatus === 0) {
                 cells[k].classList.remove('active')
-            } else if(cellStatus > 0 ){
+            } else if (cellStatus > 0) {
                 cells[k].innerHTML = cellStatus
                 cells[k].classList.remove('active')
             }
-
             k++
         }
     }
@@ -335,30 +347,31 @@ function updateArea(arr) {
 
 
 function getCookie(name) {
-let matches = document.cookie.match(new RegExp(
-    "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+    let matches = document.cookie.match(new RegExp(
+        "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
     ))
     return matches ? decodeURIComponent(matches[1]) : undefined;
 }
 
 function setCookie(name, value, options = {}) {
     options = {
-    path: '/',
-    // при необходимости добавьте другие значения по умолчанию
-    ...options
+        path: '/',
+        // при необходимости добавьте другие значения по умолчанию
+        ...options
     }
     if (options.expires instanceof Date) {
         options.expires = options.expires.toUTCString();
     }
     let updatedCookie = encodeURIComponent(name) + "=" + encodeURIComponent(value);
-    
+
 
     for (let optionKey in options) {
-            updatedCookie += "; " + optionKey;
-            let optionValue = options[optionKey];
+        updatedCookie += "; " + optionKey;
+        let optionValue = options[optionKey];
         if (optionValue !== true) {
             updatedCookie += "=" + optionValue;
-        }}
-            document.cookie = updatedCookie;
+        }
+    }
+    document.cookie = updatedCookie;
 }
 
