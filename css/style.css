@@ -23,6 +23,10 @@ header {
   background-color: var(--light-purple);
   border-radius: 20px;
   padding: 20px;
+  margin: 0 20px;
+}
+main{
+  margin: 0 20px;
 }
 
 header .logo {
