@@ -167,7 +167,7 @@ input::-webkit-inner-spin-button {
   width: 50%;
   text-align: center;
   background-color: var(--purple);
-  position: fixed;
+/*   position: fixed; */
   top: 100px;
   z-index: 1;
   box-shadow: 0 0 150px rgba(34, 89, 208, 0.51);
@@ -177,6 +177,7 @@ input::-webkit-inner-spin-button {
 .Block {
   position: absolute;
   justify-content: center;
+  align-items: center;
   border-color: bisque;
   width: 100%;
   height: 100%;
